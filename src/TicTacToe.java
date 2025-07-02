@@ -16,6 +16,8 @@ public class TicTacToe {
     String playerO = "O";
     String currentPlayer = playerX;
 
+    boolean gameOver = false;
+
     TicTacToe() {
         frame.setVisible(true);
         frame.setSize(boardwidth, boardheight);
@@ -44,13 +46,74 @@ public class TicTacToe {
                 board[r][c] = tile;
                 boardPanel.add(tile);
 
-                tile.setBackground(Color.WHITE);
-                tile.setForeground(Color.BLACK);
+                tile.setBackground(Color.DARK_GRAY);
+                tile.setForeground(Color.WHITE);
                 tile.setFont(new Font("Verdana", Font.BOLD, 120));
                 
+
+                tile.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if (gameOver) return; //if game is over, do nothing
+                        JButton tile = (JButton) e.getSource(); //casting type to JButton to get rid of errors
+                        if (tile.getText() == ""){
+                            tile.setText(currentPlayer);
+                            checkWinner();
+                            if(!gameOver){
+                                currentPlayer = currentPlayer.equals(playerX) ? playerO : playerX; //switch players
+                                textLabel.setText(currentPlayer + "'s turn");
+                            }
+                        }
+                    }
+                });
             }
 
         }
 
+    }
+    void checkWinner() {
+        //horizontal check
+        for (int r = 0; r < 3; r++) {
+            if (board[r][0].getText() == "") continue;
+
+            if (board[r][0].getText().equals(board[r][1].getText()) && board[r][0].getText().equals(board[r][2].getText())) {
+                gameOver = true;
+                for (int c = 0; c < 3; c++) {
+                    board[r][c].setForeground(Color.GREEN); //winner tile color changes
+                }
+                textLabel.setText(board[r][0].getText() + " wins!");
+                return;
+            }
+        }
+        //vertical check
+        for (int c = 0; c < 3; c++) {
+            if (board[0][c].getText() == "") continue;
+
+            if (board[0][c].getText().equals(board[1][c].getText()) && board[0][c].getText().equals(board[2][c].getText())) {
+                gameOver = true;
+                for (int r = 0; r < 3; r++) {
+                    board[r][c].setForeground(Color.GREEN); //winner tile color changes
+                }
+                textLabel.setText(board[0][c].getText() + " wins!");
+                return;
+            }
+        }
+        //diagonal check
+        if (board[0][0].getText() != "" && board[0][0].getText().equals(board[1][1].getText()) && board[0][0].getText().equals(board[2][2].getText())) {
+            gameOver = true;
+            for (int i = 0; i < 3; i++) {
+                board[i][i].setForeground(Color.GREEN); //winner tile color changes
+            }
+            textLabel.setText(board[0][0].getText() + " wins!");
+            return;
+        }
+        //anti-diagonal check
+        if (board[0][2].getText() != "" && board[0][2].getText().equals(board[1][1].getText()) && board[0][2].getText().equals(board[2][0].getText())) {
+            gameOver = true;
+            for (int i = 0; i < 3; i++) {
+                board[i][2 - i].setForeground(Color.GREEN); //winner tile color changes
+            }
+            textLabel.setText(board[0][2].getText() + " wins!");
+            return;
+        }
     }
 }
