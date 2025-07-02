@@ -7,9 +7,26 @@ public class TicTacToe {
     int boardheight = 650; // fifty for text panel
 
     JFrame frame = new JFrame();
+    JLabel textLabel = new JLabel();
+    JPanel textPanel = new JPanel();
 
     TicTacToe() {
         frame.setVisible(true);
         frame.setSize(boardwidth, boardheight);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closes the program when window is closed
+        frame.setLayout(new BorderLayout());
+
+        textLabel.setBackground(Color.GRAY);
+        textLabel.setForeground(Color.WHITE);
+        textLabel.setFont(new Font("Verdana", Font.BOLD, 50));
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
+        textLabel.setText("Tic Tac Toe");
+        textLabel.setOpaque(true);
+
+        textPanel.setLayout(new BorderLayout());
+        textPanel.add(textLabel);
+        frame.add(textPanel);
+
     }
 }
